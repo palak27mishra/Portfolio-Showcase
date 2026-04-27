@@ -2,7 +2,13 @@
 
 ## Overview
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+pnpm workspace monorepo using TypeScript. Hosts Neelima Mishra's personal portfolio website plus a shared API server.
+
+## Artifacts
+
+- **portfolio** (`/`) — React + Vite single-page portfolio for Neelima Mishra. Dark "Feminine Tech" theme (violet #A78BFA + cyan #22D3EE + rose #F472B6) on a deep navy background (#080810). Three.js particle hero, glassmorphism cards, Framer Motion scroll reveals, sticky scroll-spy navbar, magnetic CTAs, custom cursor, and a working contact form wired to `/api/contact`. All personal data lives in `src/utils/constants.ts`. Resume PDF served from `public/resume.pdf`.
+- **api-server** (`/api`) — Express 5 API. Endpoints: `GET /api/healthz`, `POST /api/contact` (validates with the generated Zod schema and persists to `contact_messages`).
+- **mockup-sandbox** (`/__mockup`) — Component preview sandbox.
 
 ## Stack
 
@@ -10,11 +16,12 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Node.js version**: 24
 - **Package manager**: pnpm
 - **TypeScript version**: 5.9
+- **Frontend**: React 18, Vite, Tailwind v4, Framer Motion, Three.js (`@react-three/fiber`, `@react-three/drei`), GSAP, Lucide, Sonner, react-hook-form
 - **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
+- **Database**: PostgreSQL + Drizzle ORM (`contact_messages` table)
 - **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
+- **Build**: esbuild (CJS bundle for the API)
 
 ## Key Commands
 

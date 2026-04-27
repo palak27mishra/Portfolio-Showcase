@@ -1,0 +1,386 @@
+Build me a stunning, production-ready personal portfolio website for 
+NEELIMA MISHRA — a Frontend Developer, Data Science & AI/ML Enthusiast, 
+and BCA student at Graphic Era University, Dehradun.
+
+This portfolio must be visually breathtaking with 3D animations, 
+glassmorphism UI, and smooth interactions — impressive enough to wow 
+any tech recruiter or company hiring manager.
+
+===================================================
+👩‍💻 PERSONAL DETAILS (Use exactly as given)
+===================================================
+Name: Neelima Mishra
+Title: Frontend Developer | Data Science & AI/ML Enthusiast
+College: Graphic Era University, Dehradun (BCA 2023–2026)
+Email: nileemamishra07@gmail.com
+Phone: +91 7906671065
+LinkedIn: [LinkedIn Profile — add actual URL]
+GitHub: [Add GitHub URL]
+Portfolio (current): [Add if available]
+
+Tagline: "Building Beautiful Interfaces & Intelligent Systems"
+
+===================================================
+🧱 TECH STACK TO USE FOR BUILDING THIS PORTFOLIO
+===================================================
+
+Frontend:
+- React.js + Vite + TypeScript
+- Tailwind CSS
+- Framer Motion (scroll & entrance animations)
+- Three.js + @react-three/fiber + @react-three/drei (3D hero scene)
+- GSAP (timeline animations)
+- React Intersection Observer (scroll triggers)
+- Lucide React (icons)
+
+Backend (for contact form):
+- Node.js + Express.js
+- Nodemailer (email on form submit)
+- dotenv, cors
+
+===================================================
+🎨 DESIGN THEME & UI/UX
+===================================================
+
+Theme: Dark Feminine Tech — elegant, modern, powerful
+NOT pink/girly — sophisticated dark with soft purple & teal accents
+
+Color Palette:
+- Background:     #080810 (deep dark navy)
+- Primary:        #A78BFA (soft violet / lavender)
+- Accent:         #22D3EE (cyan teal)
+- Highlight:      #F472B6 (subtle rose for hover glows)
+- Text:           #E2E8F0
+- Card bg:        rgba(255,255,255,0.04)
+- Border:         rgba(167,139,250,0.2)
+
+Typography:
+- Headings: "Space Grotesk" (Google Fonts)
+- Body: "Inter"
+- Code snippets: "Fira Code" (monospace)
+
+Visual Effects:
+- Glassmorphism cards (backdrop-filter: blur(12px))
+- Neon purple/teal glow on hover
+- Soft gradient text on headings
+- Animated gradient background (slow-moving aurora effect)
+- Custom cursor with glowing dot + trailing ring
+- Smooth scroll behavior site-wide
+- Subtle noise texture overlay for depth
+
+===================================================
+🌐 ALL SECTIONS — BUILD EXACTLY AS DESCRIBED
+===================================================
+
+---
+
+### SECTION 1 — HERO (Full Screen, 3D Animated)
+
+3D Scene (Three.js):
+- Floating DNA helix or neural network particle mesh that reacts to mouse
+- Soft glowing orbs drifting in the background
+- Stars / cosmic particle field
+- All 3D objects in violet + cyan color scheme
+
+Hero Text:
+- "Hi, I'm" (small label, animated fade in)
+- "Neelima Mishra" (large bold gradient text, letter-by-letter animation)
+- Rotating subtitle using typewriter effect cycling through:
+    → "Frontend Developer"
+    → "AI/ML Enthusiast"  
+    → "Data Science Explorer"
+    → "BCA Student @ GEU"
+
+Description (one line below):
+"I build beautiful web experiences and intelligent ML systems 
+that solve real-world problems."
+
+Two CTA Buttons:
+- [View My Work] → scrolls to Projects (filled violet)
+- [Download Resume] → downloads PDF (outlined, glowing border)
+
+Scroll indicator: animated bouncing arrow at bottom
+
+---
+
+### SECTION 2 — ABOUT ME
+
+Layout: Two-column
+Left: 
+- Animated profile photo placeholder with glowing violet ring border
+- Floating badge: "Open to Opportunities 🟢"
+
+Right:
+- Section heading: "About Me"
+- Bio paragraph:
+  "I'm Neelima Mishra, a passionate Frontend Developer and AI/ML 
+  enthusiast pursuing my BCA at Graphic Era University, Dehradun. 
+  I love crafting responsive, beautiful web interfaces and building 
+  intelligent ML models that make sense of data. I believe in clean 
+  code, creative UI, and continuous learning."
+
+- Highlight chips: [Frontend Dev] [AI/ML] [Data Science] [Python] [Open Source]
+
+Animated Stats Counter (count up on scroll):
+- 🖥️  5+    Projects Built
+- 📜  5     Certifications
+- ☕  500+  Hours of Coding
+- 🤖  3+    ML Models Deployed
+
+Interests row (icon + label):
+🥾 Trekking | ✍️ Poetry & Journaling | 🎵 Music | 🐾 Pets | 💻 Building Projects
+
+---
+
+### SECTION 3 — TECHNICAL SKILLS
+
+Heading: "My Tech Arsenal"
+
+Display as glowing floating skill cards grouped by category:
+
+**💻 Frontend Web:**
+HTML5, CSS3, JavaScript (ES6), Bootstrap, Responsive Design, DOM Manipulation
+
+**🐍 Programming Languages:**
+Python, C, C++, Java
+
+**🤖 Data Science / AI / ML:**
+NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Machine Learning, EDA
+
+**🧠 AI/ML Concepts:**
+Regression, Classification, Feature Engineering, Data Preprocessing, Model Evaluation
+
+**🛠️ Tools & Platforms:**
+Git, GitHub, VS Code, Jupyter Notebook, Google Colab
+
+**📐 Other:**
+Version Control, API Integration, Component-Based Dev, Agile Basics
+
+Design:
+- Each skill has an icon + name + glowing card
+- Cards gently float/bob with CSS keyframe animation
+- Hover: neon glow border + scale up
+- Add an infinite horizontal scrolling marquee below showing all tech logos (two rows, opposite scroll direction)
+
+---
+
+### SECTION 4 — PROJECTS (Most Important Section)
+
+Heading: "Things I've Built"
+Filter Tabs: [All] [Frontend] [ML/AI] [Tools]
+
+**Project 1: Personal Portfolio Website**
+Category: Frontend
+Tech: HTML5, CSS3, JavaScript
+Description: "Fully responsive portfolio with smooth scroll, dark/light theme toggle, mobile-first design, and SEO-optimized structure. Hosted live on GitHub Pages."
+Links: [Live Demo] [GitHub]
+Color accent: Violet
+
+**Project 2: House Price Prediction — ML Model**
+Category: ML/AI
+Tech: Python, Scikit-learn, Pandas, Matplotlib
+Description: "ML regression model predicting house prices using Linear Regression, Ridge, and Random Forest. Achieved R² score of ~0.87. Includes EDA, feature engineering, and data visualizations."
+Links: [GitHub]
+Badge: "R² Score: 0.87 🎯"
+Color accent: Cyan
+
+**Project 3: AI Code Reviewer**
+Category: Tools
+Tech: JavaScript, DOM, API Integration
+Description: "Web-based AI tool that analyzes source code and gives quality feedback. Uses async JavaScript and real-time API integration for instant code analysis."
+Links: [Live Demo] [GitHub]
+Color accent: Rose
+
+**Project 4: Dynamic Process Scheduling Webpage**
+Category: Frontend / Tools
+Tech: HTML5, CSS3, JavaScript
+Description: "Interactive OS process scheduling algorithm simulator with real-time input handling and live output rendering. Hosted on GitHub Pages."
+Links: [Live Demo] [GitHub]
+Color accent: Amber
+
+**Project 5: Responsive Websites Collection**
+Category: Frontend
+Tech: HTML5, CSS3, JavaScript
+Description: "Multiple responsive websites with clean UI, cross-browser compatibility, and beginner-level API integration, following component-based development practices."
+Links: [GitHub]
+Color accent: Green
+
+Card Design:
+- Glassmorphism card
+- 3D tilt effect toward cursor on hover
+- Front: Project name + description + tech badges + links
+- Glowing border on hover matching accent color
+- Subtle gradient top bar per category color
+
+---
+
+### SECTION 5 — CERTIFICATIONS & ACHIEVEMENTS
+
+Heading: "Certifications & Achievements"
+
+Display as glowing trophy cards in a 3-column grid:
+
+🏆 AWS Solutions Architecture Job Simulation
+   Forage | Cloud Hosting Architecture Design
+
+🏆 GenAI Powered Data Analytics Simulation
+   Tata Group (Forage) | AI Predictions & Data Storytelling
+
+🏆 Cybersecurity Analyst Job Simulation
+   Tata Group (Forage) | IAM Fundamentals & Strategy
+
+🏆 Software Engineering Job Simulation
+   Quantium (Forage) | Data Processing, Dashboard & Test Automation
+
+🏆 UX Design Introduction Simulation
+   Lloyds Banking Group (Forage) | User Research & Design Principles
+
+Card Design:
+- Gold/shimmer gradient border
+- Badge icon on top left
+- Hover: lift animation + shimmer sweep effect
+- Company logo placeholder
+
+---
+
+### SECTION 6 — EDUCATION TIMELINE
+
+Heading: "Education Journey"
+
+Animated vertical glowing timeline (left side has glowing dot + line):
+
+🎓 BCA — Bachelor of Computer Applications
+   Graphic Era University, Dehradun
+   2023 – 2026 (Ongoing)
+   Relevant: Web Dev, Data Structures, DBMS, AI/ML fundamentals
+
+📚 Senior Secondary (12th) — Commerce
+   Shri Guru Ram Rai, Dehradun | 2023
+
+📚 Secondary (10th)
+   Raksha Anusandhan Vidyalaya | 2021
+
+Timeline animation: Each entry slides in from alternating sides on scroll
+
+---
+
+### SECTION 7 — CONTACT ME
+
+Heading: "Let's Connect"
+Subtext: "I'm currently open to internships, freelance projects, and full-time opportunities!"
+
+Status badge: 🟢 Available for Opportunities
+
+Left side:
+- Contact info cards (Email, Phone, Location: Dehradun, Uttarakhand)
+- Social links with animated hover icons:
+  → GitHub (link placeholder)
+  → LinkedIn (link placeholder)
+  → Email: nileemamishra07@gmail.com
+
+Right side — Glassmorphism Contact Form:
+Fields: Full Name | Email | Subject | Message | [Send Message →]
+
+Form submits to Express.js backend (/api/contact)
+On success: Toast notification "Message sent! I'll get back to you soon 🚀"
+On error: Toast "Something went wrong. Please try emailing directly."
+
+---
+
+### SECTION 8 — FOOTER
+
+- "Neelima Mishra" logo text + tagline
+- Quick nav links
+- "Designed & Developed with ❤️ by Neelima Mishra"
+- "Built with React • Three.js • Tailwind CSS"
+- Back to top button (animated arrow, smooth scroll)
+
+===================================================
+✨ ANIMATIONS CHECKLIST
+===================================================
+
+✅ Page loading screen with "NM" logo that morphs and fades out
+✅ Hero 3D scene reacts to mouse movement (parallax)
+✅ Typewriter cycling text in hero
+✅ Scroll-triggered fade+slide animations for every section
+✅ Counter animation in About stats (count from 0 to value)
+✅ Skill card float animation (infinite bobbing)
+✅ Project card 3D tilt toward cursor
+✅ Certification card shimmer sweep on hover
+✅ Timeline entries slide in from alternating sides
+✅ Magnetic button effect on CTAs
+✅ Custom cursor (glowing dot + outer ring)
+✅ Smooth scroll across full site
+✅ Navbar: blur background on scroll + active section highlight
+✅ Mobile hamburger menu with slide-in drawer
+✅ 3D animations disabled/reduced on mobile for performance
+
+===================================================
+📁 FOLDER STRUCTURE
+===================================================
+
+neelima-portfolio/
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Hero.tsx          ← Three.js 3D scene here
+│   │   │   ├── About.tsx
+│   │   │   ├── Skills.tsx
+│   │   │   ├── Projects.tsx
+│   │   │   ├── Certifications.tsx
+│   │   │   ├── Education.tsx
+│   │   │   ├── Contact.tsx
+│   │   │   └── Footer.tsx
+│   │   ├── hooks/
+│   │   │   └── useScrollAnimation.ts
+│   │   ├── utils/
+│   │   │   └── constants.ts      ← All personal data stored here
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── public/
+│   │   └── resume.pdf            ← Upload your resume here
+│   └── index.html
+├── server/
+│   ├── routes/contact.js
+│   ├── index.js
+│   └── .env
+└── README.md
+
+===================================================
+📦 PACKAGES TO INSTALL
+===================================================
+
+Client (npm):
+react react-dom typescript vite
+tailwindcss postcss autoprefixer
+framer-motion
+three @react-three/fiber @react-three/drei
+gsap
+react-scroll react-intersection-observer
+lucide-react
+axios
+
+Server (npm):
+express cors dotenv nodemailer
+
+===================================================
+🔧 FINAL REQUIREMENTS
+===================================================
+
+1. Store ALL personal data (name, projects, skills, links) in ONE 
+   constants.ts file — easy to update later
+2. Fully mobile responsive (320px to 4K screens)
+3. SEO meta tags (og:title, og:description, og:image)
+4. Lighthouse score target: 90+ Performance, 95+ Accessibility
+5. Resume download button links to /public/resume.pdf
+6. Add smooth page transitions between sections
+7. Skeleton loading states for project cards
+8. All colors defined as CSS variables for easy theming
+9. Add a README.md with full setup and deployment guide
+10. Make it absolutely stunning — every scroll should feel magical ✨
+
+Start building step by step:
+First create the full project structure → install dependencies → 
+build Hero section with 3D scene → then each section in order.
+Make it look so good that a company sees it and immediately wants to hire Neelima!

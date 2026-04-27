@@ -14,3 +14,22 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Submits a new contact message from the portfolio contact form
+ * @summary Send a contact form message
+ */
+export const sendContactMessageBodyNameMax = 120;
+
+export const sendContactMessageBodyEmailMax = 200;
+
+export const sendContactMessageBodySubjectMax = 160;
+
+export const sendContactMessageBodyMessageMax = 4000;
+
+export const SendContactMessageBody = zod.object({
+  name: zod.string().min(1).max(sendContactMessageBodyNameMax),
+  email: zod.string().email().max(sendContactMessageBodyEmailMax),
+  subject: zod.string().min(1).max(sendContactMessageBodySubjectMax),
+  message: zod.string().min(1).max(sendContactMessageBodyMessageMax),
+});
