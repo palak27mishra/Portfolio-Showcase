@@ -21,17 +21,19 @@ function Portfolio() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 900);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
+    <div className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-primary/30 selection:text-primary-foreground">
       {loading && <Loader />}
       <CustomCursor />
       <AuroraBackground />
-
-      <div className="relative z-10 grain">
+      
+      <div className="noise-bg relative z-10">
         <Navbar />
         <main>
           <Hero />

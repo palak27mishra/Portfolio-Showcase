@@ -2,34 +2,36 @@ import { motion } from "framer-motion";
 
 export default function AuroraBackground() {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 bg-background">
-      <div className="absolute inset-0 dot-grid opacity-50" />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1] bg-background">
       <motion.div
         animate={{
-          x: ["-10%", "20%", "-10%"],
-          y: ["-10%", "10%", "-10%"],
-          scale: [1, 1.15, 1],
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-[20%] -left-[10%] w-[55%] h-[55%] rounded-full bg-primary/15 blur-[140px]"
-      />
-      <motion.div
-        animate={{
-          x: ["10%", "-15%", "10%"],
-          y: ["5%", "-10%", "5%"],
           scale: [1, 1.2, 1],
+          opacity: [0.3, 0.4, 0.3],
+          x: ["0%", "5%", "0%"],
+          y: ["0%", "5%", "0%"]
         }}
-        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[20%] -right-[15%] w-[55%] h-[55%] rounded-full bg-accent/15 blur-[140px]"
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-primary/20 blur-[120px]"
       />
       <motion.div
         animate={{
-          x: ["-5%", "15%", "-5%"],
-          y: ["0%", "10%", "0%"],
-          scale: [1, 1.1, 1],
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.3, 0.2],
+          x: ["0%", "-5%", "0%"],
+          y: ["0%", "-5%", "0%"]
         }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-[-20%] left-[15%] w-[60%] h-[50%] rounded-full bg-highlight/12 blur-[140px]"
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-[40%] -right-[10%] w-[50%] h-[50%] rounded-full bg-accent/20 blur-[120px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.1, 0.2, 0.1],
+          x: ["0%", "2%", "0%"],
+          y: ["0%", "-2%", "0%"]
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+        className="absolute -bottom-[20%] left-[20%] w-[70%] h-[50%] rounded-full bg-highlight/10 blur-[120px]"
       />
     </div>
   );

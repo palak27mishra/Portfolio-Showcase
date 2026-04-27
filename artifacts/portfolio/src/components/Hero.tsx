@@ -1,176 +1,239 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Download, Sparkles, MapPin } from "lucide-react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Points, PointMaterial } from "@react-three/drei";
+import * as THREE from "three";
 import { PERSONAL_INFO } from "../utils/constants";
+import { Download, ChevronDown } from "lucide-react";
 
-function Typewriter({ words, interval = 2200 }: { words: string[]; interval?: number }) {
-  const [i, setI] = useState(0);
+function ParticleNetwork() {
+  const ref = useRef<THREE.Points>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
-    const t = setInterval(() => setI((p) => (p + 1) % words.length), interval);
-    return () => clearInterval(t);
-  }, [words.length, interval]);
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
+
+  const particleCount = isMobile ? 800 : 1500;
+
+  const positions = useMemo(() => {
+    const p = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      p[i * 3] = (Math.random() - 0.5) * 10;
+      p[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      p[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+    return p;
+  }, [particleCount]);
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    ref.current.rotation.x = state.clock.elapsedTime * 0.05;
+    ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+    
+    if (!isMobile) {
+      ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, (state.mouse.x * 0.5), 0.05);
+      ref.current.position.y = THREE.MathUtils.lerp(ref.current.position.y, (state.mouse.y * 0.5), 0.05);
+    }
+  });
+
   return (
-    <span className="relative inline-flex h-[1.2em] overflow-hidden align-middle">
-      {words.map((w, idx) => (
-        <motion.span
-          key={w}
-          initial={false}
-          animate={{ y: idx === i ? "0%" : idx < i ? "-110%" : "110%", opacity: idx === i ? 1 : 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className={`${idx === i ? "relative" : "absolute inset-0"} text-primary whitespace-nowrap`}
-        >
-          {w}
-        </motion.span>
-      ))}
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
+          color="#A78BFA"
+          size={0.05}
+          sizeAttenuation={true}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
+    </group>
+  );
+}
+
+function MagneticButton({ children, className, href, download }: { children: React.ReactNode, className?: string, href: string, download?: boolean }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!ref.current) return;
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
+  };
+
+  const reset = () => setPosition({ x: 0, y: 0 });
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      download={download}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className={className}
+    >
+      {children}
+    </motion.a>
+  );
+}
+
+function TypewriterEffect({ words }: { words: string[] }) {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setTimeout(() => setReverse(true), 2000);
+      return;
+    }
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, Math.max(reverse ? 50 : 100, Math.random() * 150));
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className="inline-block min-w-[20px]">
+      {words[index].substring(0, subIndex)}
+      <span className="animate-pulse">|</span>
     </span>
   );
 }
 
 export default function Hero() {
+  const nameVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.05, duration: 0.5, ease: "easeOut" }
+    })
+  };
+
+  const [webglOk, setWebglOk] = useState(true);
+  useEffect(() => {
+    try {
+      const c = document.createElement("canvas");
+      const gl = c.getContext("webgl2") || c.getContext("webgl");
+      setWebglOk(!!gl);
+    } catch {
+      setWebglOk(false);
+    }
+  }, []);
+
   return (
-    <section id="hero" className="relative pt-28 md:pt-32 pb-16 px-4 md:px-8">
-      <div className="mx-auto max-w-6xl">
-        {/* Headline */}
-        <motion.div
+    <section id="hero" className="relative w-full h-[100dvh] flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {webglOk ? (
+          <Canvas
+            camera={{ position: [0, 0, 5] }}
+            onCreated={({ gl }) => {
+              gl.domElement.addEventListener("webglcontextlost", (e) => e.preventDefault());
+            }}
+          >
+            <ParticleNetwork />
+          </Canvas>
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(167,139,250,0.25),transparent_60%),radial-gradient(circle_at_70%_60%,rgba(34,211,238,0.18),transparent_60%)]" />
+        )}
+      </div>
+
+      <div className="container relative z-10 mx-auto px-6 md:px-12 flex flex-col items-start justify-center pt-20">
+        <motion.span 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-accent font-mono mb-4 inline-block tracking-wider"
+        >
+          Hi, I'm
+        </motion.span>
+        
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold mb-4 flex flex-wrap">
+          {PERSONAL_INFO.name.split("").map((char, i) => (
+            <motion.span
+              key={i}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              variants={nameVariants}
+              className={char === " " ? "mr-4" : "text-gradient"}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </h1>
+
+        <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="mb-8"
+          transition={{ duration: 0.5, delay: 1 }}
+          className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground font-medium mb-6 h-12"
         >
-          <div className="inline-flex items-center gap-2 pill mb-6">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span className="mono text-xs">Available for opportunities · 2026</span>
-          </div>
-
-          <h1 className="font-display font-bold tracking-[-0.04em] leading-[0.92] text-[14vw] md:text-[7.5rem] lg:text-[9rem]">
-            Neelima
-            <br />
-            <span className="text-gradient">Mishra.</span>
-          </h1>
-
-          <p className="font-display text-2xl md:text-4xl mt-6 text-foreground/90 max-w-3xl leading-tight">
-            I build <Typewriter words={["beautiful interfaces", "intelligent systems", "delightful products", "data stories"]} />
-          </p>
+          <TypewriterEffect words={PERSONAL_INFO.roles} />
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-12 gap-4 md:gap-5 mt-10">
-          {/* Intro card — large */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="col-span-12 md:col-span-7 bento-card bento-card-lift p-7 md:p-9 flex flex-col justify-between min-h-[280px]"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <span className="label text-muted-foreground">About</span>
-              <Sparkles className="w-4 h-4 text-primary" />
-            </div>
-            <p className="font-display text-xl md:text-3xl leading-tight text-foreground/90">
-              Frontend developer & AI/ML enthusiast pursuing a <span className="text-primary">BCA</span> at Graphic Era University. I love crafting <span className="text-accent">responsive interfaces</span> and building <span className="text-highlight">intelligent ML models</span>.
-            </p>
-            <div className="flex flex-wrap gap-3 mt-8">
-              <a
-                href="#projects"
-                className="group inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors"
-                data-cursor="hover"
-              >
-                <span>See my work</span>
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:rotate-45" />
-              </a>
-              <a
-                href="/resume.pdf"
-                download
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-border hover:border-foreground/40 transition-colors"
-                data-cursor="hover"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download CV</span>
-              </a>
-            </div>
-          </motion.div>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="max-w-2xl text-lg text-muted-foreground mb-10 leading-relaxed"
+        >
+          {PERSONAL_INFO.tagline} {PERSONAL_INFO.bio.split(". ")[1]}.
+        </motion.p>
 
-          {/* Avatar / vibe card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="col-span-6 md:col-span-5 bento-card bento-card-lift relative overflow-hidden p-7 min-h-[280px]"
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.4 }}
+          className="flex flex-wrap gap-4"
+        >
+          <MagneticButton 
+            href="#projects" 
+            className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg hover:bg-primary/90 transition-colors shadow-[0_0_20px_rgba(167,139,250,0.4)]"
           >
-            <div className="absolute inset-0 mesh-bg opacity-90" />
-            <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="flex items-center justify-between">
-                <span className="label text-muted-foreground">Greeting</span>
-                <span className="mono text-xs text-muted-foreground">/ 01</span>
-              </div>
-              <div>
-                <p className="font-display text-7xl md:text-8xl font-bold leading-none">
-                  Hi<span className="text-primary">.</span>
-                </p>
-                <p className="font-display text-xl mt-3 text-foreground/80">
-                  I'm <span className="font-bold">Neelima</span> — based in Dehradun, IN.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Stats: projects + ML score */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="col-span-6 md:col-span-3 bento-card bento-card-lift p-6 flex flex-col justify-between min-h-[180px]"
+            View My Work
+          </MagneticButton>
+          
+          <MagneticButton 
+            href={`${import.meta.env.BASE_URL}resume.pdf`}
+            download
+            className="px-8 py-4 rounded-full glass-card text-foreground font-semibold text-lg flex items-center gap-2 hover:border-primary hover:text-primary transition-all glow-hover"
           >
-            <span className="label text-muted-foreground">Projects shipped</span>
-            <p className="font-display text-7xl md:text-8xl font-bold leading-none text-primary">
-              5<span className="text-foreground">+</span>
-            </p>
-            <span className="text-sm text-muted-foreground">across web & ML</span>
-          </motion.div>
-
-          {/* Featured ML stat */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="col-span-6 md:col-span-4 bento-card bento-card-lift p-6 flex flex-col justify-between min-h-[180px] relative overflow-hidden"
-          >
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-accent/10 blur-2xl" />
-            <span className="label text-muted-foreground">House Price ML model</span>
-            <p className="font-display text-5xl md:text-6xl font-bold leading-none">
-              R² <span className="text-accent">0.87</span>
-            </p>
-            <span className="text-sm text-muted-foreground">Linear · Ridge · Random Forest</span>
-          </motion.div>
-
-          {/* Location card */}
-          <motion.a
-            href="#contact"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="col-span-12 md:col-span-5 bento-card bento-card-lift p-6 flex items-center justify-between gap-4 min-h-[180px] group"
-            data-cursor="hover"
-          >
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-3.5 h-3.5 text-highlight" />
-                <span className="label text-muted-foreground">Currently</span>
-              </div>
-              <p className="font-display text-2xl md:text-3xl font-semibold leading-tight">
-                Open to internships, freelance & full-time roles.
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">{PERSONAL_INFO.email}</p>
-            </div>
-            <div className="w-12 h-12 rounded-full bg-foreground text-background grid place-items-center flex-shrink-0 group-hover:bg-primary transition-colors">
-              <ArrowUpRight className="w-5 h-5 transition-transform group-hover:rotate-45" />
-            </div>
-          </motion.a>
-        </div>
+            <Download className="w-5 h-5" />
+            Download Resume
+          </MagneticButton>
+        </motion.div>
       </div>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
+      >
+        <span className="text-xs text-muted-foreground tracking-widest uppercase">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5 text-accent" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

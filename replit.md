@@ -6,7 +6,7 @@ pnpm workspace monorepo using TypeScript. Hosts Neelima Mishra's personal portfo
 
 ## Artifacts
 
-- **portfolio** (`/`) — React + Vite single-page portfolio for Neelima Mishra. Modern **dark bento** design (v2): pure black (#0A0A0A) background with animated dot grid + radial mesh, **acid lime #BEF264** primary, electric purple #A78BFA accent, coral pink #FB7185 highlight, sky blue + warm orange supporting. Type: **Bricolage Grotesque** display + Inter body + JetBrains Mono labels. Each section is built as an asymmetric **bento card grid** (Apple/Linear style) with hover lift, color glows, and Framer Motion scroll reveals. Pill-style scroll-spy navbar, custom cursor, and a working contact form wired to `/api/contact`. All personal data lives in `src/utils/constants.ts`. Resume PDF served from `public/resume.pdf`.
+- **portfolio** (`/`) — React + Vite single-page portfolio for Neelima Mishra. Dark "Feminine Tech" theme (violet #A78BFA + cyan #22D3EE + rose #F472B6) on a deep navy background (#080810). Three.js particle hero, glassmorphism cards, Framer Motion scroll reveals, sticky scroll-spy navbar, magnetic CTAs, custom cursor, and a working contact form wired to `/api/contact`. All personal data lives in `src/utils/constants.ts`. Resume PDF served from `public/resume.pdf`.
 - **api-server** (`/api`) — Express 5 API. Endpoints: `GET /api/healthz`, `POST /api/contact` (validates with the generated Zod schema and persists to `contact_messages`).
 - **mockup-sandbox** (`/__mockup`) — Component preview sandbox.
 

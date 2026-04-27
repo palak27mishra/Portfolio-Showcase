@@ -1,74 +1,54 @@
 import { motion } from "framer-motion";
-import { Award, ArrowUpRight } from "lucide-react";
 import { CERTIFICATIONS } from "../utils/constants";
-
-const ACCENTS: { glow: string; bg: string; text: string; hoverText: string }[] = [
-  { glow: "bg-primary/40", bg: "bg-primary/15", text: "text-primary", hoverText: "group-hover:text-primary" },
-  { glow: "bg-accent/40", bg: "bg-accent/15", text: "text-accent", hoverText: "group-hover:text-accent" },
-  { glow: "bg-highlight/40", bg: "bg-highlight/15", text: "text-highlight", hoverText: "group-hover:text-highlight" },
-  { glow: "bg-secondary/40", bg: "bg-secondary/15", text: "text-secondary", hoverText: "group-hover:text-secondary" },
-  { glow: "bg-warm/40", bg: "bg-warm/15", text: "text-warm", hoverText: "group-hover:text-warm" },
-];
+import { Trophy, Award } from "lucide-react";
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="relative px-4 md:px-8 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="certifications" className="py-24 relative z-10 bg-background/50">
+      <div className="container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-12 flex-wrap gap-4"
+          className="text-center mb-16"
         >
-          <div>
-            <span className="label text-primary mb-3 block">05 / Credentials</span>
-            <h2 className="font-display font-bold text-5xl md:text-7xl tracking-tight leading-[0.95]">
-              Industry <br />
-              <span className="text-gradient-warm">simulations.</span>
-            </h2>
-          </div>
-          <p className="text-muted-foreground max-w-md text-base leading-relaxed">
-            Hands-on virtual experience programs from Forage — practicing real workflows in cloud, security, analytics, software & design.
-          </p>
+          <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">Certifications & <span className="text-gradient">Achievements</span></h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>
 
-        <div className="grid grid-cols-12 gap-4 md:gap-5">
-          {CERTIFICATIONS.map((c, i) => {
-            const accent = ACCENTS[i % ACCENTS.length];
-            return (
-              <motion.div
-                key={c.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="col-span-12 md:col-span-6 lg:col-span-4 bento-card bento-card-lift p-6 group relative overflow-hidden min-h-[220px]"
-              >
-                <div className={`absolute -top-10 -right-10 w-28 h-28 rounded-full blur-2xl opacity-40 group-hover:opacity-70 transition-opacity ${accent.glow}`} />
-                <div className="relative z-10 h-full flex flex-col justify-between">
-                  <div className="flex items-start justify-between">
-                    <div className={`w-11 h-11 rounded-xl ${accent.bg} grid place-items-center ${accent.text}`}>
-                      <Award className="w-5 h-5" />
-                    </div>
-                    <span className="mono text-xs text-muted-foreground tabular-nums">
-                      {String(i + 1).padStart(2, "0")} / {CERTIFICATIONS.length}
-                    </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CERTIFICATIONS.map((cert, i) => (
+            <motion.div
+              key={cert.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -10 }}
+              className="relative glass-card p-6 rounded-2xl overflow-hidden group border border-border hover:border-yellow-500/30 transition-all duration-300"
+            >
+              {/* Shimmer sweep effect */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              
+              <div className="relative z-10 flex items-start gap-4">
+                <div className="p-3 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 text-yellow-500 border border-yellow-500/20 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                  {i % 2 === 0 ? <Trophy className="w-6 h-6" /> : <Award className="w-6 h-6" />}
+                </div>
+                
+                <div>
+                  <h3 className="font-heading font-semibold text-lg mb-2 text-foreground group-hover:text-yellow-500/90 transition-colors">
+                    {cert.title}
+                  </h3>
+                  <div className="text-sm font-medium text-muted-foreground mb-1">
+                    {cert.issuer}
                   </div>
-                  <div>
-                    <h3 className="font-display text-lg font-bold leading-snug mb-2">
-                      {c.title}
-                    </h3>
-                    <div className="flex items-center justify-between mt-3">
-                      <p className={`text-sm font-medium ${accent.text}`}>{c.issuer}</p>
-                      <ArrowUpRight className={`w-4 h-4 text-muted-foreground ${accent.hoverText} group-hover:rotate-45 transition-all`} />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-3 leading-relaxed">{c.topic}</p>
+                  <div className="text-xs text-muted-foreground/80">
+                    {cert.topic}
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,153 +1,119 @@
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { Code2, BrainCircuit, Sparkles, Quote } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { PERSONAL_INFO, STATS } from "../utils/constants";
+import { Map, Feather, Music, PawPrint, Blocks } from "lucide-react";
 
-function Counter({ value, suffix }: { value: number; suffix: string }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-  const [n, setN] = useState(0);
+function Counter({ from, to, suffix, duration = 2 }: { from: number, to: number, suffix: string, duration?: number }) {
+  const [count, setCount] = useState(from);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
+
   useEffect(() => {
-    if (!inView) return;
-    const dur = 1400;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min((t - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(value * ease));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, value]);
-  return (
-    <span ref={ref} className="tabular-nums">
-      {n}
-      {suffix}
-    </span>
-  );
+    if (inView) {
+      let start = from;
+      const increment = (to - from) / (duration * 60);
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= to) {
+          setCount(to);
+          clearInterval(timer);
+        } else {
+          setCount(Math.ceil(start));
+        }
+      }, 1000 / 60);
+      return () => clearInterval(timer);
+    }
+  }, [inView, from, to, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 export default function About() {
+  const INTERESTS = [
+    { label: "Trekking", icon: Map },
+    { label: "Poetry & Journaling", icon: Feather },
+    { label: "Music", icon: Music },
+    { label: "Pets", icon: PawPrint },
+    { label: "Building Projects", icon: Blocks },
+  ];
+
   return (
-    <section id="about" className="relative px-4 md:px-8 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl">
-        {/* Section heading */}
+    <section id="about" className="py-24 relative z-10">
+      <div className="container mx-auto px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-12 flex-wrap gap-4"
+          className="text-center mb-16"
         >
-          <div>
-            <span className="label text-primary mb-3 block">02 / About</span>
-            <h2 className="font-display font-bold text-5xl md:text-7xl tracking-tight leading-[0.95]">
-              A bit about <br />
-              <span className="text-gradient-warm">me.</span>
-            </h2>
-          </div>
-          <p className="text-muted-foreground max-w-md text-base leading-relaxed">
-            Curious by nature, methodical in code, and always chasing the next interesting problem.
-          </p>
+          <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">About <span className="text-gradient">Me</span></h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-12 gap-4 md:gap-5">
-          {/* Pull quote card */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="col-span-12 md:col-span-8 bento-card bento-card-lift p-8 md:p-10 relative overflow-hidden min-h-[300px]"
+            className="lg:col-span-5 relative"
           >
-            <Quote className="absolute top-6 right-6 w-10 h-10 text-primary/20" />
-            <span className="label text-muted-foreground">Manifesto</span>
-            <p className="font-display text-3xl md:text-5xl leading-[1.1] mt-6 font-medium tracking-tight">
-              I believe in <span className="text-primary">clean code</span>, creative <span className="text-accent">UI</span>, and the quiet thrill of getting a model to <span className="text-highlight">make sense</span> of messy data.
-            </p>
-            <p className="text-base text-muted-foreground mt-6 max-w-2xl leading-relaxed">
+            <div className="relative w-full aspect-square max-w-[400px] mx-auto rounded-full p-2 bg-gradient-to-tr from-primary/50 via-accent/30 to-highlight/50">
+              <div className="absolute inset-0 rounded-full animate-spin-slow bg-gradient-to-tr from-primary via-transparent to-accent opacity-50 blur-xl" />
+              <img 
+                src={`${import.meta.env.BASE_URL}avatar.png`} 
+                alt="Neelima Mishra Avatar" 
+                className="w-full h-full object-cover rounded-full border-4 border-background relative z-10"
+              />
+              <motion.div 
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -right-4 top-10 z-20 glass-card px-4 py-2 rounded-full shadow-lg shadow-primary/20 border-primary/30 flex items-center gap-2"
+              >
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse shadow-[0_0_10px_#22D3EE]" />
+                <span className="text-sm font-medium whitespace-nowrap">Open to Opportunities</span>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-7"
+          >
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8">
               {PERSONAL_INFO.bio}
             </p>
-          </motion.div>
 
-          {/* Avatar/initial card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="col-span-12 md:col-span-4 bento-card bento-card-lift relative overflow-hidden min-h-[300px] p-6"
-          >
-            <div className="absolute inset-0 mesh-bg" />
-            <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="flex items-center justify-between">
-                <span className="label text-muted-foreground">Avatar</span>
-                <span className="text-xs mono text-muted-foreground">v1.0</span>
-              </div>
-              <div className="grid place-items-center my-4">
-                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary via-accent to-highlight grid place-items-center text-5xl font-display font-extrabold text-background shadow-2xl">
-                  NM
-                </div>
-              </div>
-              <div className="text-center">
-                <p className="font-display text-xl font-semibold">Neelima Mishra</p>
-                <p className="text-xs text-muted-foreground mt-1 mono">she/her · she codes</p>
-              </div>
+            <div className="flex flex-wrap gap-3 mb-10">
+              {["Frontend Dev", "AI/ML", "Data Science", "Python", "Open Source"].map((chip, i) => (
+                <span key={i} className="px-4 py-2 rounded-full text-sm font-medium glass-card border-primary/20 text-primary hover:bg-primary/10 transition-colors">
+                  {chip}
+                </span>
+              ))}
             </div>
-          </motion.div>
 
-          {/* Highlight cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="col-span-6 md:col-span-3 bento-card bento-card-lift p-6 flex flex-col justify-between min-h-[180px]"
-          >
-            <Code2 className="w-6 h-6 text-primary" />
-            <div>
-              <p className="font-display text-2xl font-bold leading-tight">Frontend craft</p>
-              <p className="text-xs text-muted-foreground mt-1">React · TS · Tailwind</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="col-span-6 md:col-span-3 bento-card bento-card-lift p-6 flex flex-col justify-between min-h-[180px]"
-          >
-            <BrainCircuit className="w-6 h-6 text-accent" />
-            <div>
-              <p className="font-display text-2xl font-bold leading-tight">ML & data</p>
-              <p className="text-xs text-muted-foreground mt-1">Python · sklearn · pandas</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="col-span-12 md:col-span-6 bento-card bento-card-lift p-6 min-h-[180px] flex flex-col justify-between"
-          >
-            <div className="flex items-center justify-between">
-              <Sparkles className="w-6 h-6 text-highlight" />
-              <span className="label text-muted-foreground">By the numbers</span>
-            </div>
-            <div className="grid grid-cols-4 gap-3">
-              {STATS.map((s) => (
-                <div key={s.label}>
-                  <div className="font-display text-2xl md:text-3xl font-bold text-primary leading-none">
-                    <Counter value={s.value} suffix={s.suffix} />
-                  </div>
-                  <div className="text-[10px] text-muted-foreground mt-1.5 leading-tight">{s.label}</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-10">
+              {STATS.map((stat, i) => (
+                <div key={i} className="flex flex-col gap-2">
+                  <span className="text-3xl md:text-4xl font-heading font-bold text-accent">
+                    <Counter from={0} to={stat.value} suffix={stat.suffix} />
+                  </span>
+                  <span className="text-sm text-muted-foreground font-medium uppercase tracking-wider">{stat.label}</span>
                 </div>
               ))}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-heading font-semibold mb-4 text-foreground/90">Interests & Hobbies</h3>
+              <div className="flex flex-wrap gap-4">
+                {INTERESTS.map((interest, i) => (
+                  <div key={i} className="flex items-center gap-2 text-muted-foreground hover:text-highlight transition-colors">
+                    <interest.icon className="w-5 h-5" />
+                    <span>{interest.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
