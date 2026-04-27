@@ -1,157 +1,44 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Github } from "lucide-react";
 import { PROJECTS } from "../utils/constants";
-import { ExternalLink, Github } from "lucide-react";
 
-function ProjectCard({ project }: { project: any }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7.5deg", "-7.5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7.5deg", "7.5deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
-      className="perspective-1000 h-full"
-    >
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative w-full h-full glass-card rounded-2xl overflow-hidden group hover:border-[var(--hover-color)] transition-colors duration-500 flex flex-col"
-        style={{ "--hover-color": project.color } as any}
-      >
-        {/* Top Accent Bar */}
-        <div className="h-1 w-full" style={{ backgroundColor: project.color }} />
-        
-        <div className="p-8 flex-grow flex flex-col" style={{ transform: "translateZ(30px)" }}>
-          <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-mono px-3 py-1 rounded-full bg-background/50 border border-border" style={{ color: project.color }}>
-              {project.category}
-            </span>
-            {project.badge && (
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-background/80 border border-border text-foreground">
-                {project.badge}
-              </span>
-            )}
-          </div>
-
-          <h3 className="text-2xl font-heading font-bold mb-3 group-hover:text-[var(--hover-color)] transition-colors">
-            {project.title}
-          </h3>
-          
-          <p className="text-muted-foreground mb-6 flex-grow">
-            {project.description}
-          </p>
-
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.tags.map((tag: string, i: number) => (
-              <span key={i} className="text-xs font-medium px-2 py-1 bg-muted/50 rounded-md text-muted-foreground">
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4 mt-auto">
-            {project.links.github && (
-              <a 
-                href={project.links.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-medium hover:text-[var(--hover-color)] transition-colors"
-              >
-                <Github className="w-4 h-4" /> Code
-              </a>
-            )}
-            {project.links.live && (
-              <a 
-                href={project.links.live} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-medium hover:text-[var(--hover-color)] transition-colors"
-              >
-                <ExternalLink className="w-4 h-4" /> Live Demo
-              </a>
-            )}
-          </div>
-        </div>
-
-        {/* Hover Glow Effect */}
-        <div 
-          className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
-          style={{ background: `radial-gradient(circle at 50% 0%, ${project.color}, transparent 70%)` }}
-        />
-      </motion.div>
-    </motion.div>
-  );
-}
+const FILTERS = ["All", "Frontend", "ML/AI", "Tools"];
 
 export default function Projects() {
   const [filter, setFilter] = useState("All");
-  const filters = ["All", "Frontend", "ML/AI", "Tools"];
-
-  const filteredProjects = PROJECTS.filter(project => {
-    if (filter === "All") return true;
-    if (project.category.includes("&")) {
-      return project.category.includes(filter);
-    }
-    return project.category === filter;
-  });
+  const filtered = PROJECTS.filter((p) =>
+    filter === "All" ? true : p.category.includes(filter)
+  );
 
   return (
-    <section id="projects" className="py-24 relative z-10">
-      <div className="container mx-auto px-6 md:px-12">
+    <section id="projects" className="relative px-4 md:px-8 py-20 md:py-28">
+      <div className="mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="flex items-end justify-between mb-12 flex-wrap gap-6"
         >
-          <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">Things I've <span className="text-gradient">Built</span></h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-10" />
-          
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-            {filters.map(f => (
+          <div>
+            <span className="label text-primary mb-3 block">04 / Selected work</span>
+            <h2 className="font-display font-bold text-5xl md:text-7xl tracking-tight leading-[0.95]">
+              Things I've <br />
+              <span className="text-gradient">built.</span>
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-2 bg-surface/60 border border-border rounded-full p-1.5">
+            {FILTERS.map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                  filter === f 
-                    ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(167,139,250,0.4)]" 
-                    : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/50"
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  filter === f
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
+                data-cursor="hover"
               >
                 {f}
               </button>
@@ -159,13 +46,117 @@ export default function Projects() {
           </div>
         </motion.div>
 
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map(project => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filter}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-12 gap-4 md:gap-5"
+          >
+            {filtered.map((p, i) => {
+              const isFeatured = i === 0;
+              return (
+                <motion.article
+                  key={p.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-30px" }}
+                  transition={{ duration: 0.5, delay: i * 0.05 }}
+                  className={`group bento-card bento-card-lift relative overflow-hidden ${
+                    isFeatured
+                      ? "col-span-12 md:col-span-8 min-h-[440px]"
+                      : "col-span-12 sm:col-span-6 md:col-span-4 min-h-[340px]"
+                  }`}
+                >
+                  {/* Color wash */}
+                  <div
+                    className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity"
+                    style={{
+                      background: `radial-gradient(circle at 30% 20%, ${p.color}55, transparent 55%), radial-gradient(circle at 80% 90%, ${p.color}30, transparent 50%)`,
+                    }}
+                  />
+                  <div className="absolute inset-0 dot-grid opacity-30" />
+
+                  <div className="relative z-10 p-7 md:p-8 h-full flex flex-col">
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: p.color, boxShadow: `0 0 12px ${p.color}` }}
+                        />
+                        <span className="label text-muted-foreground">{p.category}</span>
+                      </div>
+                      {p.badge && (
+                        <span
+                          className="mono text-[11px] px-2.5 py-1 rounded-full border"
+                          style={{ color: p.color, borderColor: `${p.color}55`, backgroundColor: `${p.color}15` }}
+                        >
+                          {p.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-auto">
+                      <h3
+                        className={`font-display font-bold tracking-tight leading-tight mb-3 ${
+                          isFeatured ? "text-3xl md:text-5xl" : "text-2xl md:text-3xl"
+                        }`}
+                      >
+                        {p.title}
+                      </h3>
+                      <p className={`text-muted-foreground leading-relaxed ${isFeatured ? "text-base" : "text-sm"} ${isFeatured ? "" : "line-clamp-2"} mb-5 max-w-prose`}>
+                        {p.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-1.5 mb-6">
+                        {p.tags.slice(0, isFeatured ? 5 : 3).map((t) => (
+                          <span
+                            key={t}
+                            className="px-2.5 py-1 rounded-full bg-background/40 border border-border mono text-[10px] text-muted-foreground"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-4">
+                          {p.links.live && (
+                            <a
+                              href={p.links.live}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-sm font-medium hover:text-primary transition-colors"
+                              data-cursor="hover"
+                            >
+                              Live <ArrowUpRight className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                          {p.links.github && (
+                            <a
+                              href={p.links.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                              data-cursor="hover"
+                            >
+                              <Github className="w-3.5 h-3.5" /> Code
+                            </a>
+                          )}
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-foreground/10 grid place-items-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                          <ArrowUpRight className="w-4 h-4 transition-transform group-hover:rotate-45" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

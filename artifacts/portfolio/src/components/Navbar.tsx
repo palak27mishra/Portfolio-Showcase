@@ -3,11 +3,10 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LINKS = [
-  { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Certifications", href: "#certifications" },
+  { name: "Work", href: "#projects" },
+  { name: "Certs", href: "#certifications" },
   { name: "Education", href: "#education" },
   { name: "Contact", href: "#contact" },
 ];
@@ -15,12 +14,10 @@ const LINKS = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -29,104 +26,127 @@ export default function Navbar() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
       },
-      { rootMargin: "-40% 0px -60% 0px" }
+      { rootMargin: "-40% 0px -55% 0px" }
     );
-
-    LINKS.forEach(({ href }) => {
+    [...LINKS, { href: "#hero" }].forEach(({ href }) => {
       const el = document.querySelector(href);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, []);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border py-4"
-          : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <a href="#hero" className="text-2xl font-heading font-bold text-gradient">
-          NM.
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 pt-4">
+      <div
+        className={`mx-auto max-w-6xl flex items-center justify-between gap-4 px-4 md:px-6 py-3 rounded-2xl transition-all duration-300 ${
+          isScrolled
+            ? "bg-surface/80 backdrop-blur-xl border border-border"
+            : "bg-transparent"
+        }`}
+      >
+        <a href="#hero" className="flex items-center gap-2 font-display font-bold text-xl tracking-tight">
+          <span className="w-7 h-7 rounded-lg bg-primary text-primary-foreground grid place-items-center text-sm font-extrabold">
+            n
+          </span>
+          <span>
+            neelima<span className="text-primary">.</span>
+          </span>
         </a>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {LINKS.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                activeSection === link.href.substring(1)
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
+        <nav className="hidden lg:flex items-center gap-1 bg-surface-2/40 border border-border rounded-full p-1">
+          {LINKS.map((link) => {
+            const active = activeSection === link.href.substring(1);
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                className={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                  active ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    transition={{ type: "spring", damping: 30, stiffness: 350 }}
+                    className="absolute inset-0 bg-primary rounded-full"
+                  />
+                )}
+                <span className="relative z-10">{link.name}</span>
+              </a>
+            );
+          })}
         </nav>
 
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-foreground p-2 -mr-2"
-          onClick={() => setIsMobileMenuOpen(true)}
+        <a
+          href="#contact"
+          className="hidden lg:inline-flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-primary transition-colors"
+          data-cursor="hover"
         >
-          <Menu className="w-6 h-6" />
+          Let's talk
+          <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+        </a>
+
+        <button
+          className="lg:hidden p-2 -mr-2"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
         </button>
       </div>
 
-      {/* Mobile Drawer */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-50 lg:hidden"
+              onClick={() => setIsOpen(false)}
             />
-            <motion.div
+            <motion.aside
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[280px] bg-card border-l border-border z-50 flex flex-col p-6 shadow-2xl md:hidden"
+              transition={{ type: "spring", damping: 28, stiffness: 220 }}
+              className="fixed top-0 right-0 bottom-0 w-[300px] bg-surface border-l border-border z-50 flex flex-col p-6 lg:hidden"
             >
-              <div className="flex justify-end mb-8">
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 -mr-2 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="w-6 h-6" />
+              <div className="flex items-center justify-between mb-10">
+                <span className="label text-muted-foreground">Menu</span>
+                <button onClick={() => setIsOpen(false)} className="p-2 -mr-2" aria-label="Close menu">
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <nav className="flex flex-col gap-6">
-                {LINKS.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-lg font-medium transition-colors ${
-                      activeSection === link.href.substring(1)
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    {link.name}
-                  </a>
-                ))}
+              <nav className="flex flex-col gap-1">
+                {LINKS.map((link) => {
+                  const active = activeSection === link.href.substring(1);
+                  return (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center justify-between py-3 px-4 rounded-xl transition-colors ${
+                        active ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-surface-2"
+                      }`}
+                    >
+                      <span className="font-display text-xl font-medium">{link.name}</span>
+                      <span className="text-xs opacity-60">↗</span>
+                    </a>
+                  );
+                })}
               </nav>
-            </motion.div>
+              <a
+                href="#contact"
+                onClick={() => setIsOpen(false)}
+                className="mt-auto inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-4 py-3 rounded-xl text-sm font-semibold"
+              >
+                Let's talk →
+              </a>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>

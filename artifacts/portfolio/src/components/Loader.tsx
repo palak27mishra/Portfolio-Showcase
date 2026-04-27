@@ -5,9 +5,7 @@ export default function Loader() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 1200);
+    const timer = setTimeout(() => setIsVisible(false), 900);
     return () => clearTimeout(timer);
   }, []);
 
@@ -16,27 +14,26 @@ export default function Loader() {
       {isVisible && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          exit={{ opacity: 0, transition: { duration: 0.5 } }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
         >
-          <div className="relative">
+          <div className="flex flex-col items-center gap-5">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative z-10 flex items-center justify-center w-24 h-24 rounded-full border-2 border-primary/30 bg-background/50 backdrop-blur-md"
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="text-7xl font-display font-bold tracking-tight"
             >
-              <span className="text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent">
-                NM
-              </span>
+              n<span className="text-primary">m</span>
             </motion.div>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 z-0 rounded-full border-t-2 border-r-2 border-accent opacity-50 blur-sm"
-              style={{ width: "120%", height: "120%", top: "-10%", left: "-10%" }}
-            />
+            <div className="relative h-0.5 w-28 overflow-hidden bg-foreground/10 rounded-full">
+              <motion.div
+                initial={{ x: "-100%" }}
+                animate={{ x: "100%" }}
+                transition={{ duration: 0.85, ease: "easeInOut" }}
+                className="absolute inset-0 bg-primary rounded-full"
+              />
+            </div>
           </div>
         </motion.div>
       )}
