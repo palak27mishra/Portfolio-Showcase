@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Neelima Mishra — Frontend Developer & AI/ML Enthusiast. BCA student at Graphic Era University, Dehradun. Building beautiful interfaces and intelligent systems." />
+  <meta name="author" content="Neelima Mishra" />
+  <meta name="keywords" content="Neelima Mishra, Frontend Developer, AI/ML, Machine Learning, Portfolio, BCA, Dehradun, Graphic Era University" />
+
+  <meta property="og:title" content="Neelima Mishra — Frontend Developer & AI/ML Enthusiast" />
+  <meta property="og:description" content="Building Beautiful Interfaces & Intelligent Systems." />
+  <meta property="og:type" content="website" />
+
+  <title>Neelima Mishra — Frontend Developer & AI/ML Enthusiast</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader-monogram">NM<span>.</span></div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <!-- Aurora background -->
+  <div class="aurora">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="#hero" class="nav-logo">NM<span>.</span></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#certifications" class="nav-link">Certifications</a></li>
+        <li><a href="#education" class="nav-link">Education</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <canvas class="hero-particles" id="hero-particles"></canvas>
+    <div class="container hero-inner">
+      <p class="hero-greeting reveal">Hi, I'm</p>
+      <h1 class="hero-name" id="hero-name"></h1>
+      <h2 class="hero-role">
+        <span id="typewriter"></span><span class="caret">|</span>
+      </h2>
+      <p class="hero-bio reveal">
+        Building Beautiful Interfaces &amp; Intelligent Systems. I love crafting responsive, beautiful web interfaces and building intelligent ML models that make sense of data.
+      </p>
+      <div class="hero-cta reveal">
+        <a href="#projects" class="btn btn-primary magnetic">View My Work</a>
+        <a href="resume.pdf" download class="btn btn-outline magnetic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
+      </div>
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">01 — About</span>
+        <h2 class="section-title">A Little About Me</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-portrait reveal">
+          <div class="portrait-glow"></div>
+          <div class="portrait-inner">
+            <span class="portrait-initials">NM</span>
+          </div>
+        </div>
+        <div class="about-content reveal">
+          <span class="badge"><span class="dot"></span> Open to Opportunities</span>
+          <p class="about-bio">
+            I'm <strong>Neelima Mishra</strong>, a passionate Frontend Developer and AI/ML enthusiast pursuing my BCA at Graphic Era University, Dehradun. I love crafting responsive, beautiful web interfaces and building intelligent ML models that make sense of data. I believe in clean code, creative UI, and continuous learning.
+          </p>
+          <div class="about-chips">
+            <span class="chip">Clean Code</span>
+            <span class="chip">Creative UI</span>
+            <span class="chip">ML Models</span>
+            <span class="chip">Continuous Learning</span>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-num" data-target="5" data-suffix="+">0</span><span class="stat-label">Projects Built</span></div>
+            <div class="stat-card"><span class="stat-num" data-target="5" data-suffix="">0</span><span class="stat-label">Certifications</span></div>
+            <div class="stat-card"><span class="stat-num" data-target="500" data-suffix="+">0</span><span class="stat-label">Hours Coding</span></div>
+            <div class="stat-card"><span class="stat-num" data-target="3" data-suffix="+">0</span><span class="stat-label">ML Models</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">02 — Skills</span>
+        <h2 class="section-title">Tech Arsenal</h2>
+      </div>
+      <div class="skills-grid" id="skills-grid"></div>
+      <div class="marquee">
+        <div class="marquee-track" id="marquee-track-1"></div>
+      </div>
+      <div class="marquee marquee-reverse">
+        <div class="marquee-track" id="marquee-track-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">03 — Projects</span>
+        <h2 class="section-title">Selected Work</h2>
+      </div>
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" data-filter="All">All</button>
+        <button class="filter-tab" data-filter="Frontend">Frontend</button>
+        <button class="filter-tab" data-filter="ML/AI">ML/AI</button>
+        <button class="filter-tab" data-filter="Tools">Tools</button>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section id="certifications" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">04 — Certifications</span>
+        <h2 class="section-title">Industry Simulations</h2>
+      </div>
+      <div class="cert-grid" id="cert-grid"></div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">05 — Education</span>
+        <h2 class="section-title">Academic Journey</h2>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">06 — Contact</span>
+        <h2 class="section-title">Let's Build Something</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h3>Let's connect</h3>
+          <p>Have a project in mind, an opportunity to share, or just want to say hi? My inbox is always open.</p>
+          <ul class="contact-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:nileemamishra07@gmail.com">nileemamishra07@gmail.com</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+917906671065">+91 7906671065</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Dehradun, Uttarakhand</span>
+            </li>
+          </ul>
+        </div>
+        <form class="contact-form glass reveal" id="contact-form" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required minlength="2" />
+            <span class="field-error" data-for="name"></span>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+            <span class="field-error" data-for="email"></span>
+          </div>
+          <div class="field">
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" type="text" required minlength="3" />
+            <span class="field-error" data-for="subject"></span>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required minlength="10"></textarea>
+            <span class="field-error" data-for="message"></span>
+          </div>
+          <button type="submit" class="btn btn-primary magnetic" id="submit-btn">
+            <span class="btn-label">Send Message</span>
+          </button>
+          <p class="form-status" id="form-status" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#hero" class="nav-logo">NM<span>.</span></a>
+      <p class="footer-text">Designed &amp; built with care by Neelima Mishra · © <span id="year"></span></p>
+      <div class="footer-socials">
+        <a href="#" aria-label="GitHub" class="social-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.78-1.34-1.78-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5z"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn" class="social-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        </a>
+        <a href="mailto:nileemamishra07@gmail.com" aria-label="Email" class="social-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
